@@ -1,0 +1,31 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Database
+instance/
+*.db
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Exports
+exports/*
+!exports/.gitkeep
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
