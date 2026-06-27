@@ -1,0 +1,26 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:0;
+    background:#f4f6f8;
+}
+
+.navbar{
+    background:#1f4e79;
+    color:white;
+    padding:15px;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+a{
+    color:white;
+    text-decoration:none;
+    margin-right:20px;
+}
+
+h1{
+    color:#1f4e79;
+}
