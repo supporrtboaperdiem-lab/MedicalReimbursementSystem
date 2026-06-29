@@ -29,7 +29,10 @@ def init_extensions(app):
 
 def register_blueprints(app):
     from app.routes.main import main_bp
+    from app.routes.employee import employee_bp
+
     app.register_blueprint(main_bp)
+    app.register_blueprint(employee_bp)
 
 
 def configure_logging(app):
