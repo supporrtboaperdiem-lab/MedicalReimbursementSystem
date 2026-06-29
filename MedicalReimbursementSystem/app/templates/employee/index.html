@@ -6,10 +6,34 @@
 
 <h1>Employees</h1>
 
-<p>Employee management page.</p>
+<a href="{{ url_for('employee.create') }}">Add Employee</a>
 
-<a href="{{ url_for('employee.create') }}">
-    Add Employee
-</a>
+<br><br>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Employee Code</th>
+            <th>Full Name</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.employee_code }}</td>
+            <td>{{ employee.full_name }}</td>
+            <td>{{ employee.created_at }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No employees found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

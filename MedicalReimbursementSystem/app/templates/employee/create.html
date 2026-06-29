@@ -6,6 +6,18 @@
 
 <h1>Create Employee</h1>
 
-<p>This page will contain the employee registration form.</p>
+<form method="POST">
+    <label>Employee Code</label><br>
+    <input type="text" name="employee_code" required><br><br>
+
+    <label>Full Name</label><br>
+    <input type="text" name="full_name" required><br><br>
+
+    <button type="submit">Save Employee</button>
+</form>
+
+<br>
+
+<a href="{{ url_for('employee.index') }}">Back to Employees</a>
 
 {% endblock %}

@@ -17,22 +17,6 @@ class Employee(BaseModel):
         nullable=False
     )
 
-    department = db.Column(
-        db.String(100),
-        nullable=True
-    )
-
-    branch = db.Column(
-        db.String(100),
-        nullable=True
-    )
-
-    is_active = db.Column(
-        db.Boolean,
-        default=True,
-        nullable=False
-    )
-
     expenses = db.relationship(
         "Expense",
         back_populates="employee",
