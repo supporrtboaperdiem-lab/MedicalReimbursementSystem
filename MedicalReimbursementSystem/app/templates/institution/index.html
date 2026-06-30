@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Institutions{% endblock %}
+
+{% block content %}
+
+<h1>Institutions</h1>
+
+<a href="{{ url_for('institution.create') }}">
+    Add Institution
+</a>
+
+<br><br>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Address</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for institution in institutions %}
+
+        <tr>
+            <td>{{ institution.id }}</td>
+            <td>{{ institution.name }}</td>
+            <td>{{ institution.institution_type }}</td>
+            <td>{{ institution.address }}</td>
+            <td>{{ institution.phone }}</td>
+        </tr>
+
+    {% else %}
+
+        <tr>
+            <td colspan="5">
+                No institutions found.
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Create Institution{% endblock %}
+
+{% block content %}
+
+<h1>Create Institution</h1>
+
+<form method="POST">
+
+    <label>Name</label><br>
+
+    <input
+        type="text"
+        name="name"
+        required
+    >
+
+    <br><br>
+
+    <label>Institution Type</label><br>
+
+    <select name="institution_type">
+
+        {% for t in institution_types %}
+
+            <option value="{{ t }}">
+                {{ t }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>Address</label><br>
+
+    <input
+        type="text"
+        name="address"
+    >
+
+    <br><br>
+
+    <label>Phone</label><br>
+
+    <input
+        type="text"
+        name="phone"
+    >
+
+    <br><br>
+
+    <button type="submit">
+
+        Save Institution
+
+    </button>
+
+</form>
+
+{% endblock %}

@@ -23,6 +23,16 @@ class PriceListItem(BaseModel):
         nullable=True
     )
 
+    cash_price = db.Column(
+        db.Numeric(12, 2),
+        nullable=True
+    )
+
+    discount = db.Column(
+        db.Numeric(12, 2),
+        nullable=True
+    )
+
     approved_price = db.Column(
         db.Numeric(12, 2),
         nullable=False
@@ -50,7 +60,4 @@ class PriceListItem(BaseModel):
     )
 
     def __repr__(self):
-        return (
-            f"<PriceListItem {self.service_name} "
-            f"{self.approved_price}>"
-        )
+        return f"<PriceListItem {self.service_name} - {self.approved_price}>"
