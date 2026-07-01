@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Price List{% endblock %}
+
+{% block content %}
+
+<h1>Upload Institution Price List</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <label>Institution</label><br>
+    <select name="institution_id" required>
+        <option value="">Select Institution</option>
+
+        {% for institution in institutions %}
+        <option value="{{ institution.id }}">
+            {{ institution.name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Price List Name</label><br>
+    <input type="text"
+           name="batch_name"
+           placeholder="Example: St. Gabriel 2026 Approved Price List"
+           required>
+
+    <br><br>
+
+    <label>Upload PDF / Image</label><br>
+    <input type="file"
+           name="price_list_file"
+           accept=".pdf,.jpg,.jpeg,.png"
+           required>
+
+    <br><br>
+
+    <button type="submit">Upload and Extract</button>
+</form>
+
+<br>
+
+<a href="{{ url_for('price_list.index') }}">Back to Price Lists</a>
+
+{% endblock %}

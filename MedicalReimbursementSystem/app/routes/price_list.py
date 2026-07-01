@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
 
 from app.services.price_list_service import PriceListService
 
@@ -11,31 +11,54 @@ price_list_bp = Blueprint(
 
 @price_list_bp.route("/")
 def index():
-    items = PriceListService.list_items()
-    return render_template("price_list/index.html", items=items)
+    batches = PriceListService.list_batches()
+    return render_template(
+        "price_list/index.html",
+        batches=batches
+    )
 
 
-@price_list_bp.route("/create", methods=["GET", "POST"])
-def create():
+@price_list_bp.route("/upload", methods=["GET", "POST"])
+def upload():
     institutions = PriceListService.list_institutions()
 
     if request.method == "POST":
-        success, message = PriceListService.create_item(request.form)
+        success, message, batch_id = PriceListService.upload_price_list(
+            form_data=request.form,
+            file=request.files.get("price_list_file"),
+            upload_folder=current_app.config["UPLOAD_FOLDER"]
+        )
+
+        flash(message, "success" if success else "error")
 
         if success:
-            flash(message, "success")
-            return redirect(url_for("price_list.index"))
-
-        flash(message, "error")
+            return redirect(url_for("price_list.review", batch_id=batch_id))
 
     return render_template(
-        "price_list/create.html",
+        "price_list/upload.html",
         institutions=institutions
     )
 
 
-@price_list_bp.route("/<int:item_id>/edit", methods=["GET", "POST"])
-def edit(item_id):
+@price_list_bp.route("/<int:batch_id>/review")
+def review(batch_id):
+    batch = PriceListService.get_batch(batch_id)
+
+    if not batch:
+        flash("Price list batch not found.", "error")
+        return redirect(url_for("price_list.index"))
+
+    items = PriceListService.get_batch_items(batch_id)
+
+    return render_template(
+        "price_list/review.html",
+        batch=batch,
+        items=items
+    )
+
+
+@price_list_bp.route("/item/<int:item_id>/edit", methods=["GET", "POST"])
+def edit_item(item_id):
     item = PriceListService.get_item(item_id)
 
     if not item:
@@ -43,40 +66,51 @@ def edit(item_id):
         return redirect(url_for("price_list.index"))
 
     if request.method == "POST":
-        success, message = PriceListService.update_item(item_id, request.form)
+        success, message = PriceListService.update_item(
+            item_id,
+            request.form
+        )
 
-        if success:
-            flash(message, "success")
-            return redirect(url_for("price_list.index"))
+        flash(message, "success" if success else "error")
 
-        flash(message, "error")
+        return redirect(url_for(
+            "price_list.review",
+            batch_id=item.batch_id
+        ))
 
-    return render_template("price_list/edit.html", item=item)
+    return render_template(
+        "price_list/edit.html",
+        item=item
+    )
 
 
-@price_list_bp.route("/<int:item_id>/delete", methods=["POST"])
-def delete(item_id):
-    success, message = PriceListService.delete_item(item_id)
-
-    if success:
-        flash(message, "success")
-    else:
-        flash(message, "error")
-
-    return redirect(url_for("price_list.index"))
-
-@price_list_bp.route("/<int:item_id>/approve", methods=["POST"])
-def approve(item_id):
-    success, message = PriceListService.approve_item(item_id)
+@price_list_bp.route("/item/<int:item_id>/delete", methods=["POST"])
+def delete_item(item_id):
+    success, message, batch_id = PriceListService.delete_item(item_id)
 
     flash(message, "success" if success else "error")
 
-    return redirect(url_for("price_list.index"))
+    return redirect(url_for(
+        "price_list.review",
+        batch_id=batch_id
+    ))
 
 
-@price_list_bp.route("/<int:item_id>/reject", methods=["POST"])
-def reject(item_id):
-    success, message = PriceListService.reject_item(item_id)
+@price_list_bp.route("/<int:batch_id>/approve", methods=["POST"])
+def approve_batch(batch_id):
+    success, message = PriceListService.approve_batch(batch_id)
+
+    flash(message, "success" if success else "error")
+
+    return redirect(url_for(
+        "price_list.review",
+        batch_id=batch_id
+    ))
+
+
+@price_list_bp.route("/<int:batch_id>/reject", methods=["POST"])
+def reject_batch(batch_id):
+    success, message = PriceListService.reject_batch(batch_id)
 
     flash(message, "success" if success else "error")
 
