@@ -10,6 +10,10 @@ class PriceListRepository:
         ).all()
 
     @staticmethod
+    def get_by_id(item_id):
+        return PriceListItem.query.get(item_id)
+
+    @staticmethod
     def get_by_institution_and_service(institution_id, service_name):
         return PriceListItem.query.filter_by(
             institution_id=institution_id,
@@ -17,20 +21,10 @@ class PriceListRepository:
         ).first()
 
     @staticmethod
-    def create(
-        institution_id,
-        service_name,
-        approved_price,
-        service_category=None,
-        cash_price=None,
-        discount=None
-    ):
+    def create(institution_id, service_name, approved_price):
         item = PriceListItem(
             institution_id=institution_id,
             service_name=service_name,
-            service_category=service_category,
-            cash_price=cash_price,
-            discount=discount,
             approved_price=approved_price,
         )
 
@@ -38,3 +32,17 @@ class PriceListRepository:
         db.session.commit()
 
         return item
+
+    @staticmethod
+    def update(item, service_name, approved_price):
+        item.service_name = service_name
+        item.approved_price = approved_price
+
+        db.session.commit()
+
+        return item
+
+    @staticmethod
+    def delete(item):
+        db.session.delete(item)
+        db.session.commit()

@@ -18,34 +18,9 @@ class PriceListItem(BaseModel):
         index=True
     )
 
-    service_category = db.Column(
-        db.String(100),
-        nullable=True
-    )
-
-    cash_price = db.Column(
-        db.Numeric(12, 2),
-        nullable=True
-    )
-
-    discount = db.Column(
-        db.Numeric(12, 2),
-        nullable=True
-    )
-
     approved_price = db.Column(
         db.Numeric(12, 2),
         nullable=False
-    )
-
-    effective_from = db.Column(
-        db.Date,
-        nullable=True
-    )
-
-    effective_to = db.Column(
-        db.Date,
-        nullable=True
     )
 
     is_active = db.Column(
@@ -57,6 +32,14 @@ class PriceListItem(BaseModel):
     institution = db.relationship(
         "Institution",
         back_populates="price_list_items"
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "institution_id",
+            "service_name",
+            name="uq_institution_service_price"
+        ),
     )
 
     def __repr__(self):

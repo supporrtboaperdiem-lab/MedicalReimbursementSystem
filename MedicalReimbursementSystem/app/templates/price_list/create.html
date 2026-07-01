@@ -4,84 +4,32 @@
 
 {% block content %}
 
-<h1>Create Price List Item</h1>
+<h1>Add Service Price</h1>
 
 <form method="POST">
-
     <label>Institution</label><br>
-
     <select name="institution_id" required>
-
         <option value="">Select Institution</option>
-
         {% for institution in institutions %}
-
         <option value="{{ institution.id }}">
             {{ institution.name }}
         </option>
-
         {% endfor %}
-
     </select>
 
     <br><br>
 
     <label>Service Name</label><br>
-
-    <input
-        type="text"
-        name="service_name"
-        required
-    >
-
-    <br><br>
-
-    <label>Category (Optional)</label><br>
-
-    <input
-        type="text"
-        name="service_category"
-    >
-
-    <br><br>
-
-    <label>Cash Price (Optional)</label><br>
-
-    <input
-        type="number"
-        step="0.01"
-        name="cash_price"
-    >
-
-    <br><br>
-
-    <label>Discount (Optional)</label><br>
-
-    <input
-        type="number"
-        step="0.01"
-        name="discount"
-    >
+    <input type="text" name="service_name" required>
 
     <br><br>
 
     <label>Approved Price</label><br>
-
-    <input
-        type="number"
-        step="0.01"
-        name="approved_price"
-        required
-    >
+    <input type="number" step="0.01" name="approved_price" required>
 
     <br><br>
 
-    <button type="submit">
-
-        Save Price List Item
-
-    </button>
-
+    <button type="submit">Save Service Price</button>
 </form>
 
 {% endblock %}

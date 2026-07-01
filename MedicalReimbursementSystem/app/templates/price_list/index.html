@@ -4,70 +4,47 @@
 
 {% block content %}
 
-<h1>Institution Price Lists</h1>
+<h1>Approved Institution Price List</h1>
 
 <p>
-    <a href="{{ url_for('price_list.create') }}">
-        ➕ Add Price List Item
-    </a>
+    <a href="{{ url_for('price_list.create') }}">Add Service Price</a>
 </p>
 
 <table border="1" cellpadding="8" cellspacing="0">
-
     <thead>
-
         <tr>
-
             <th>ID</th>
             <th>Institution</th>
             <th>Service</th>
-            <th>Category</th>
-            <th>Cash Price</th>
-            <th>Discount</th>
             <th>Approved Price</th>
-
+            <th>Actions</th>
         </tr>
-
     </thead>
 
     <tbody>
-
-    {% for item in items %}
-
+        {% for item in items %}
         <tr>
-
             <td>{{ item.id }}</td>
-
             <td>{{ item.institution.name }}</td>
-
             <td>{{ item.service_name }}</td>
-
-            <td>{{ item.service_category or "-" }}</td>
-
-            <td>{{ item.cash_price or "-" }}</td>
-
-            <td>{{ item.discount or "-" }}</td>
-
             <td>{{ item.approved_price }}</td>
+            <td>
+                <a href="{{ url_for('price_list.edit', item_id=item.id) }}">Edit</a>
 
-        </tr>
-
-    {% else %}
-
-        <tr>
-
-            <td colspan="7">
-
-                No price list items found.
-
+                <form method="POST"
+                      action="{{ url_for('price_list.delete', item_id=item.id) }}"
+                      style="display:inline;"
+                      onsubmit="return confirm('Delete this service price?');">
+                    <button type="submit">Delete</button>
+                </form>
             </td>
-
         </tr>
-
-    {% endfor %}
-
+        {% else %}
+        <tr>
+            <td colspan="5">No price list items found.</td>
+        </tr>
+        {% endfor %}
     </tbody>
-
 </table>
 
 {% endblock %}
