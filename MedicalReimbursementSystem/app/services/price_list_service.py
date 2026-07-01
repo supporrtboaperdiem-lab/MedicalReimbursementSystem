@@ -101,3 +101,23 @@ class PriceListService:
         PriceListRepository.delete(item)
 
         return True, "Price list item deleted successfully."
+    
+    @staticmethod
+    def approve_item(item_id):
+        item = PriceListRepository.get_by_id(item_id)
+
+        if not item:
+            return False, "Price list item not found."
+
+        PriceListRepository.approve(item)
+        return True, "Price list item approved successfully."
+
+    @staticmethod
+    def reject_item(item_id):
+        item = PriceListRepository.get_by_id(item_id)
+
+        if not item:
+            return False, "Price list item not found."
+
+        PriceListRepository.reject(item)
+        return True, "Price list item rejected successfully."

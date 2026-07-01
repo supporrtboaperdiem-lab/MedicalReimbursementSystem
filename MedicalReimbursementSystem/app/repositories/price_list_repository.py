@@ -26,6 +26,7 @@ class PriceListRepository:
             institution_id=institution_id,
             service_name=service_name,
             approved_price=approved_price,
+            approval_status="PENDING",
         )
 
         db.session.add(item)
@@ -37,9 +38,21 @@ class PriceListRepository:
     def update(item, service_name, approved_price):
         item.service_name = service_name
         item.approved_price = approved_price
+        item.approval_status = "PENDING"
 
         db.session.commit()
+        return item
 
+    @staticmethod
+    def approve(item):
+        item.approval_status = "APPROVED"
+        db.session.commit()
+        return item
+
+    @staticmethod
+    def reject(item):
+        item.approval_status = "REJECTED"
+        db.session.commit()
         return item
 
     @staticmethod

@@ -50,6 +50,11 @@ class Institution(BaseModel):
         back_populates="institution",
         lazy=True
     )
+    price_list_batches = db.relationship(
+        "PriceListBatch",
+        back_populates="institution",
+        lazy=True
+    )
 
     def __repr__(self):
         return f"<Institution {self.name}>"

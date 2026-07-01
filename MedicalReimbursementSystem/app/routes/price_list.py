@@ -64,3 +64,20 @@ def delete(item_id):
         flash(message, "error")
 
     return redirect(url_for("price_list.index"))
+
+@price_list_bp.route("/<int:item_id>/approve", methods=["POST"])
+def approve(item_id):
+    success, message = PriceListService.approve_item(item_id)
+
+    flash(message, "success" if success else "error")
+
+    return redirect(url_for("price_list.index"))
+
+
+@price_list_bp.route("/<int:item_id>/reject", methods=["POST"])
+def reject(item_id):
+    success, message = PriceListService.reject_item(item_id)
+
+    flash(message, "success" if success else "error")
+
+    return redirect(url_for("price_list.index"))

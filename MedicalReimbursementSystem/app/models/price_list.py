@@ -5,6 +5,13 @@ from app.models.base import BaseModel
 class PriceListItem(BaseModel):
     __tablename__ = "price_list_items"
 
+    batch_id = db.Column(
+        db.Integer,
+        db.ForeignKey("price_list_batches.id"),
+        nullable=False,
+        index=True
+    )
+
     institution_id = db.Column(
         db.Integer,
         db.ForeignKey("institutions.id"),
@@ -29,6 +36,11 @@ class PriceListItem(BaseModel):
         nullable=False
     )
 
+    batch = db.relationship(
+        "PriceListBatch",
+        back_populates="items"
+    )
+
     institution = db.relationship(
         "Institution",
         back_populates="price_list_items"
@@ -36,9 +48,9 @@ class PriceListItem(BaseModel):
 
     __table_args__ = (
         db.UniqueConstraint(
-            "institution_id",
+            "batch_id",
             "service_name",
-            name="uq_institution_service_price"
+            name="uq_batch_service_price"
         ),
     )
 
