@@ -33,9 +33,23 @@
             <td>{{ "Yes" if batch.is_active else "No" }}</td>
             <td>{{ batch.created_at }}</td>
             <td>
-                <a href="{{ url_for('price_list.review', batch_id=batch.id) }}">
-                    Review
-                </a>
+                <a href="{{ url_for('price_list.review', batch_id=batch.id) }}"
+   style="
+       display: inline-block;
+       background: #198754;
+       color: #ffffff;
+       padding: 6px 14px;
+       border-radius: 6px;
+       text-decoration: none;
+       font-size: 13px;
+       font-weight: 600;
+       transition: all 0.2s ease;
+       box-shadow: 0 2px 6px rgba(25, 135, 84, 0.25);
+   "
+   onmouseover="this.style.background='#157347'; this.style.transform='translateY(-1px)'"
+   onmouseout="this.style.background='#198754'; this.style.transform='translateY(0)'">
+    Review
+</a>
             </td>
         </tr>
         {% else %}

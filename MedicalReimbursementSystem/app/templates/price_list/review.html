@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Review Price List{% endblock %}
+
+{% block content %}
+
+<h1>Review Price List</h1>
+
+<p>
+    <strong>Institution:</strong> {{ batch.institution.name }} <br>
+    <strong>Name:</strong> {{ batch.name }} <br>
+    <strong>Status:</strong> {{ batch.status }} <br>
+    <strong>Active:</strong> {{ "Yes" if batch.is_active else "No" }}
+</p>
+
+{% if batch.status != "APPROVED" %}
+<form method="POST"
+      action="{{ url_for('price_list.approve_batch', batch_id=batch.id) }}"
+      style="display:inline;">
+    <button type="submit"
+            onclick="return confirm('Approve this entire price list?');">
+        Approve Price List
+    </button>
+</form>
+
+<form method="POST"
+      action="{{ url_for('price_list.reject_batch', batch_id=batch.id) }}"
+      style="display:inline;">
+    <button type="submit"
+            onclick="return confirm('Reject this price list?');">
+        Reject
+    </button>
+</form>
+{% endif %}
+
+<br><br>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Service</th>
+            <th>Approved Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ item.service_name }}</td>
+            <td>{{ item.approved_price }}</td>
+            <td>
+                {% if batch.status != "APPROVED" %}
+                <a href="{{ url_for('price_list.edit_item', item_id=item.id) }}"
+                    style="
+                        display:inline-block;
+                        padding:4px 10px;
+                        background:#003366;
+                        color:white;
+                        text-decoration:none;
+                        border-radius:4px;
+                        font-size:13px;
+                        font-weight:bold;
+                    ">
+                        Edit
+                    </a>
+
+                <form method="POST"
+                      action="{{ url_for('price_list.delete_item', item_id=item.id) }}"
+                      style="display:inline;">
+                      <button
+                      type="submit"
+                      onclick="return confirm('Delete this service?');"
+                      style="
+                          background: #b71c1c;
+                          color: #ffffff;
+                          border: none;
+                          padding: 6px 12px;
+                          border-radius: 6px;
+                          cursor: pointer;
+                          font-size: 13px;
+                          font-weight: 600;
+                          transition: background-color 0.2s ease, transform 0.1s ease;
+                      "
+                      onmouseover="this.style.background='#8b0000'"
+                      onmouseout="this.style.background='#b71c1c'"
+                      onmousedown="this.style.transform='scale(0.97)'"
+                      onmouseup="this.style.transform='scale(1)'">
+                      Delete
+                  </button>
+                </form>
+                {% else %}
+                Locked
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No services extracted.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+
+<a href="{{ url_for('price_list.index') }}">Back to Price Lists</a>
+
+{% endblock %}

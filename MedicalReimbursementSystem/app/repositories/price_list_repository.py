@@ -8,7 +8,7 @@ class PriceListRepository:
         return PriceListItem.query.filter_by(
             batch_id=batch_id
         ).order_by(
-            PriceListItem.service_name.asc()
+            PriceListItem.id.asc()
         ).all()
 
     @staticmethod
