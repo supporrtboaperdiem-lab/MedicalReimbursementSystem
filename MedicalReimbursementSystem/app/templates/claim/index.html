@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Claims{% endblock %}
+
+{% block content %}
+
+<h1>Medical Claims</h1>
+
+<p>
+    <a href="{{ url_for('claim.submit') }}"
+       style="
+           display:inline-block;
+           background:#003366;
+           color:white;
+           padding:8px 14px;
+           border-radius:6px;
+           text-decoration:none;
+           font-weight:600;
+       ">
+        Submit New Claim
+    </a>
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Institution</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for claim in claims %}
+        <tr>
+            <td>{{ claim.id }}</td>
+            <td>{{ claim.patient_name }}</td>
+            <td>{{ claim.institution.name }}</td>
+            <td>{{ claim.status }}</td>
+            <td>{{ claim.created_at }}</td>
+            <td>
+                <a href="{{ url_for('claim.review', claim_id=claim.id) }}"
+                   style="
+                       display:inline-block;
+                       background:#198754;
+                       color:white;
+                       padding:6px 12px;
+                       border-radius:6px;
+                       text-decoration:none;
+                       font-weight:600;
+                   ">
+                    Review
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">No claims submitted yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

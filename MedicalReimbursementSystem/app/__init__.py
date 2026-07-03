@@ -32,11 +32,26 @@ def register_blueprints(app):
     from app.routes.employee import employee_bp
     from app.routes.institution import institution_bp
     from app.routes.price_list import price_list_bp
+    from app.routes.claim import claim_bp
+    
+    app.register_blueprint(claim_bp)
+    app.register_blueprint(main_bp)
+    app.register_blueprint(employee_bp)
+    app.register_blueprint(institution_bp)
+    app.register_blueprint(price_list_bp)
+
+def register_blueprints(app):
+    from app.routes.main import main_bp
+    from app.routes.employee import employee_bp
+    from app.routes.institution import institution_bp
+    from app.routes.price_list import price_list_bp
+    from app.routes.claim import claim_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(employee_bp)
     app.register_blueprint(institution_bp)
     app.register_blueprint(price_list_bp)
+    app.register_blueprint(claim_bp)
 
 
 def configure_logging(app):

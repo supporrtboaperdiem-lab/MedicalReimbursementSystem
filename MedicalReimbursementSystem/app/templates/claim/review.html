@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Review Claim{% endblock %}
+
+{% block content %}
+
+<h1>Review Medical Claim</h1>
+
+<p>
+    <strong>Patient:</strong> {{ claim.patient_name }} <br>
+    <strong>Institution:</strong> {{ claim.institution.name }} <br>
+    <strong>Status:</strong> {{ claim.status }}
+</p>
+
+{% if claim.status == "PENDING_REVIEW" %}
+<form method="POST"
+      action="{{ url_for('claim.approve', claim_id=claim.id) }}"
+      style="display:inline;">
+    <button type="submit"
+            style="
+                background:#198754;
+                color:white;
+                border:none;
+                padding:8px 14px;
+                border-radius:6px;
+                cursor:pointer;
+                font-weight:600;
+            ">
+        Approve Claim
+    </button>
+</form>
+
+<form method="POST"
+      action="{{ url_for('claim.reject', claim_id=claim.id) }}"
+      style="display:inline;">
+    <button type="submit"
+            style="
+                background:#b71c1c;
+                color:white;
+                border:none;
+                padding:8px 14px;
+                border-radius:6px;
+                cursor:pointer;
+                font-weight:600;
+            ">
+        Reject Claim
+    </button>
+</form>
+{% endif %}
+
+<br><br>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Service</th>
+            <th>Receipt Price</th>
+            <th>Approved Price</th>
+            <th>Difference</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in claim.items %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ item.service_name }}</td>
+            <td>{{ item.receipt_price }}</td>
+            <td>{{ item.approved_price if item.approved_price is not none else "-" }}</td>
+            <td>{{ item.difference if item.difference is not none else "-" }}</td>
+            <td>
+                {% if item.validation_status == "MATCHED" %}
+                    ✅ MATCHED
+                {% elif item.validation_status == "OVER_PRICE" %}
+                    ⚠️ OVER PRICE
+                {% elif item.validation_status == "UNDER_PRICE" %}
+                    ℹ️ UNDER PRICE
+                {% else %}
+                    ❌ UNKNOWN SERVICE
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">No receipt items extracted.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+
+<a href="{{ url_for('claim.index') }}">Back to Claims</a>
+
+{% endblock %}

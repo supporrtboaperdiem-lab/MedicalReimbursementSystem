@@ -186,3 +186,38 @@ class PriceListService:
         PriceListBatchRepository.reject(batch)
 
         return True, "Price list rejected."
+    
+    @staticmethod
+    def add_item_to_batch(batch_id, form_data):
+        batch = PriceListBatchRepository.get_by_id(batch_id)
+
+        if not batch:
+            return False, "Price list batch not found."
+
+        service_name = form_data.get("service_name", "").strip()
+        approved_price = PriceListService._to_decimal(
+            form_data.get("approved_price")
+        )
+
+        if not service_name:
+            return False, "Service name is required."
+
+        if approved_price is None:
+            return False, "Approved price is required and must be numeric."
+
+        existing = PriceListRepository.get_by_batch_and_service(
+            batch_id,
+            service_name
+        )
+
+        if existing:
+            return False, "This service already exists in this price list."
+
+        PriceListRepository.create(
+            batch_id=batch.id,
+            institution_id=batch.institution_id,
+            service_name=service_name,
+            approved_price=approved_price
+        )
+
+        return True, "Service added successfully."

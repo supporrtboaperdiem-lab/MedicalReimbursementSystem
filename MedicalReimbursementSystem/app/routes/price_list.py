@@ -115,3 +115,29 @@ def reject_batch(batch_id):
     flash(message, "success" if success else "error")
 
     return redirect(url_for("price_list.index"))
+
+@price_list_bp.route("/<int:batch_id>/add-item", methods=["GET", "POST"])
+def add_item(batch_id):
+    batch = PriceListService.get_batch(batch_id)
+
+    if not batch:
+        flash("Price list batch not found.", "error")
+        return redirect(url_for("price_list.index"))
+
+    if request.method == "POST":
+        success, message = PriceListService.add_item_to_batch(
+            batch_id,
+            request.form
+        )
+
+        flash(message, "success" if success else "error")
+
+        return redirect(url_for(
+            "price_list.review",
+            batch_id=batch_id
+        ))
+
+    return render_template(
+        "price_list/add_item.html",
+        batch=batch
+    )

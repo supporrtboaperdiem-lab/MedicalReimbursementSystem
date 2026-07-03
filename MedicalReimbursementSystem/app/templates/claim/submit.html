@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Claim{% endblock %}
+
+{% block content %}
+
+<h1>Submit Medical Claim</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <label>Institution</label><br>
+    <select name="institution_id" required>
+        <option value="">Select Institution</option>
+        {% for institution in institutions %}
+        <option value="{{ institution.id }}">
+            {{ institution.name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Patient Name</label><br>
+    <input type="text" name="patient_name" required>
+
+    <br><br>
+
+    <label>Receipt File</label><br>
+    <input type="file"
+           name="receipt_file"
+           accept=".pdf,.jpg,.jpeg,.png"
+           required>
+
+    <br><br>
+
+    <button type="submit"
+            style="
+                background:#003366;
+                color:white;
+                border:none;
+                padding:8px 14px;
+                border-radius:6px;
+                cursor:pointer;
+                font-weight:600;
+            ">
+        Upload and Validate
+    </button>
+</form>
+
+<br>
+
+<a href="{{ url_for('claim.index') }}">Back to Claims</a>
+
+{% endblock %}
